@@ -29,8 +29,8 @@ router.post('/register', (req, res) => {
     return res.status(400).json(errors);
   }
   
-  User.findOne({ email: req.body.email })
-  .then(user => {
+  // Find User
+  User.findOne({ email: req.body.email }).then(user => {
     if(user){
       errors.email = 'Email Already Exist';
       return res.status(400).json(errors);
@@ -41,6 +41,7 @@ router.post('/register', (req, res) => {
         d: 'mm' // Default
       });
 
+      // Containing Inputed User Data
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -48,10 +49,13 @@ router.post('/register', (req, res) => {
         password: req.body.password
       });
 
+      // Generate Bcrypt Salt
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
+          // Hash Password with Bcrypt
           newUser.password = hash;
+          // Save New User to Database
           newUser
           .save()
           .then(user => res.json(user))
@@ -62,7 +66,7 @@ router.post('/register', (req, res) => {
   });
 });
 
-// @route   GET api/users/login
+// @route   POST api/users/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req, res) => {
@@ -72,6 +76,7 @@ router.post('/login', (req, res) => {
   if(!isValid){
     return res.status(400).json(errors);
   }
+  
   const email = req.body.email;
   const password = req.body.password;
 
