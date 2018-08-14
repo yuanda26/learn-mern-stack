@@ -3,12 +3,10 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
-// Post model
+// Include Require Model
 const Post = require("../../models/Posts");
-// Profile model
 const Profile = require("../../models/Profile");
-
-// Validation
+// Post Validation
 const validatePostInput = require("../../validation/posts");
 
 // @route   GET api/posts/test
@@ -17,28 +15,28 @@ const validatePostInput = require("../../validation/posts");
 router.get("/test", (req, res) => res.json({ msg: "Posts Works" }));
 
 // @route   GET api/posts
-// @desc    Get posts
+// @desc    Get All Post
 // @access  Public
 router.get("/", (req, res) => {
   Post.find()
     .sort({ date: -1 })
     .then(posts => res.json(posts))
-    .catch(err => res.status(404).json({ nopostsfound: "No posts found" }));
+    .catch(err => res.status(404).json({ nopostsfound: "No Post Found" }));
 });
 
 // @route   GET api/posts/:id
-// @desc    Get post by id
+// @desc    Get Post by Id
 // @access  Public
 router.get("/:id", (req, res) => {
   Post.findById(req.params.id)
     .then(post => res.json(post))
     .catch(err =>
-      res.status(404).json({ nopostfound: "No post found with that ID" })
+      res.status(404).json({ nopostfound: "No Post Found With that ID" })
     );
 });
 
 // @route   POST api/posts
-// @desc    Create post
+// @desc    Create Post
 // @access  Private
 router.post(
   "/",
@@ -64,7 +62,7 @@ router.post(
 );
 
 // @route   DELETE api/posts/:id
-// @desc    Delete post
+// @desc    Delete Post
 // @access  Private
 router.delete(
   "/:id",
@@ -73,23 +71,23 @@ router.delete(
     Profile.findOne({ user: req.user.id }).then(profile => {
       Post.findById(req.params.id)
         .then(post => {
-          // Check for post owner
+          // Check post owner
           if (post.user.toString() !== req.user.id) {
             return res
               .status(401)
-              .json({ notauthorized: "User not authorized" });
+              .json({ notauthorized: "User Not Authorized" });
           }
 
-          // Delete
+          // Remove Post
           post.remove().then(() => res.json({ success: true }));
         })
-        .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+        .catch(err => res.status(404).json({ postnotfound: "No Post Found" }));
     });
   }
 );
 
 // @route   POST api/posts/like/:id
-// @desc    Like post
+// @desc    Like Post
 // @access  Private
 router.post(
   "/like/:id",
@@ -107,18 +105,17 @@ router.post(
               .json({ alreadyliked: "User already liked this post" });
           }
 
-          // Add user id to likes array
+          // Add the user id to likes array
           post.likes.unshift({ user: req.user.id });
-
           post.save().then(post => res.json(post));
         })
-        .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+        .catch(err => res.status(404).json({ postnotfound: "No Post Found" }));
     });
   }
 );
 
 // @route   POST api/posts/unlike/:id
-// @desc    Unlike post
+// @desc    Unlike Post
 // @access  Private
 router.post(
   "/unlike/:id",
@@ -136,24 +133,22 @@ router.post(
               .json({ notliked: "You have not yet liked this post" });
           }
 
-          // Get remove index
+          // Get the remove index
           const removeIndex = post.likes
             .map(item => item.user.toString())
             .indexOf(req.user.id);
 
           // Splice out of array
           post.likes.splice(removeIndex, 1);
-
-          // Save
           post.save().then(post => res.json(post));
         })
-        .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+        .catch(err => res.status(404).json({ postnotfound: "No Post Found" }));
     });
   }
 );
 
 // @route   POST api/posts/comment/:id
-// @desc    Add comment to post
+// @desc    Add Comment to Post
 // @access  Private
 router.post(
   "/comment/:id",
@@ -178,16 +173,14 @@ router.post(
 
         // Add to comments array
         post.comments.unshift(newComment);
-
-        // Save
         post.save().then(post => res.json(post));
       })
-      .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+      .catch(err => res.status(404).json({ postnotfound: "No Post Found" }));
   }
 );
 
 // @route   DELETE api/posts/comment/:id/:comment_id
-// @desc    Remove comment from post
+// @desc    Remove comment from Post
 // @access  Private
 router.delete(
   "/comment/:id/:comment_id",
@@ -195,7 +188,7 @@ router.delete(
   (req, res) => {
     Post.findById(req.params.id)
       .then(post => {
-        // Check to see if comment exists
+        // check if the comment exist
         if (
           post.comments.filter(
             comment => comment._id.toString() === req.params.comment_id
@@ -213,10 +206,9 @@ router.delete(
 
         // Splice comment out of array
         post.comments.splice(removeIndex, 1);
-
         post.save().then(post => res.json(post));
       })
-      .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+      .catch(err => res.status(404).json({ postnotfound: "No Post Found" }));
   }
 );
 
