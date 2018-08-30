@@ -13,13 +13,13 @@ class Login extends Component {
       errors: {}
     };
 
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    // this.onChange = this.onChange.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(e) {
+  onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
   // React Lifecycle Method Component
   componentDidMount() {
@@ -38,7 +38,7 @@ class Login extends Component {
     }
   }
 
-  onSubmit(e) {
+  onSubmit = e => {
     e.preventDefault();
 
     const userData = {
@@ -47,7 +47,7 @@ class Login extends Component {
     };
 
     this.props.loginUser(userData);
-  }
+  };
 
   render() {
     const { errors } = this.state;
