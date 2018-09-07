@@ -39,7 +39,7 @@ InputGroup.propTypes = {
   type: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   icon: PropTypes.string,
-  error: PropTypes.string
+  errors: PropTypes.string
 };
 
 InputGroup.defaultProps = {
