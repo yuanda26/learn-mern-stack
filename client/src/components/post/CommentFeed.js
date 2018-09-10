@@ -8,8 +8,6 @@ class CommentFeed extends Component {
     return comments.map(comment => (
       <CommentItem key={comment._id} comment={comment} postId={postId} />
     ));
-
-    return <div />;
   }
 }
 
