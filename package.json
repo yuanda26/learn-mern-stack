@@ -9,6 +9,7 @@
   },
   "main": "server.js",
   "scripts": {
+    "test":"jest",
     "client-install": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
@@ -33,6 +34,11 @@
     "validator": "^9.4.1"
   },
   "devDependencies": {
-    "nodemon": "^1.17.5"
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.17.5",
+    "superagent": "^3.8.3",
+    "supertest": "^3.3.0"
   }
 }
