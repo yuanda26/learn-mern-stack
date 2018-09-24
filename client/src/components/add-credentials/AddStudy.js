@@ -4,9 +4,9 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addEducation } from "../../actions/profileActions";
+import { addStudy } from "../../actions/profileActions";
 
-class AddEducation extends Component {
+class AddStudy extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +41,7 @@ class AddEducation extends Component {
       description: this.state.description
     };
 
-    this.props.addEducation(eduData, this.props.history);
+    this.props.addStudy(eduData, this.props.history);
   };
 
   onChange = e => {
@@ -59,7 +59,7 @@ class AddEducation extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="add-education">
+      <div className="add-study">
         <div className="container">
           <div className="row">
             <div className="col-md-8 mx-auto">
@@ -146,8 +146,8 @@ class AddEducation extends Component {
   }
 }
 
-AddEducation.propTypes = {
-  addEducation: PropTypes.func.isRequired,
+AddStudy.propTypes = {
+  addStudy: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -159,5 +159,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addEducation }
-)(withRouter(AddEducation));
+  { addStudy }
+)(withRouter(AddStudy));
