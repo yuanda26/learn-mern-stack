@@ -43,11 +43,6 @@ app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 
-// Root Route
-app.get("/", (req, res) => {
-  res.send("Root App");
-});
-
 // Server Static Assets if in Production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
